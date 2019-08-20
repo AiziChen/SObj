@@ -2,7 +2,7 @@
 Programming Languages data/objects transmit original format. This is the JavaScript Language version.
 
 ## How to use?
-This project is based on the `typescript programming language`, so if you would like to use in the web, you should be install the `tsc` compiler toolkit:
+This project is based on the `typescript programming language`, so if you would like to use in the web, you should be install the `tsc` compiler:
 1. How to install `tsc`? 
 int the command line, input:
 > npm install -g typescript
