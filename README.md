@@ -10,6 +10,7 @@ int the command line, input:
 ```javascript
 import {SObj} from "SObj";
 
+// sobj string. Is all the sobj's syntax below.
 let sobj = `
 (sobj
     (name "陈权业")
@@ -33,6 +34,7 @@ let obj = {
     beautiful: true
 };
 
+// pase sobj to javascript's object
 SObj.toObj(sobj);
 ```
 ## What is differences between JSON and SObj?
