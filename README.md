@@ -37,6 +37,9 @@ let obj = {
 // parse sobj to javascript's object
 SObj.toObj(sobj);
 ```
+3. Convert typescript to javascript
+> tsc -lib es6 SObj.ts
+
 ## What is differences between JSON and SObj?
 They are the same pointing that use to transmit the data/objects.
 ## What about SObj, instead of JSON?
