@@ -34,7 +34,7 @@ let obj = {
     beautiful: true
 };
 
-// pase sobj to javascript's object
+// parse sobj to javascript's object
 SObj.toObj(sobj);
 ```
 ## What is differences between JSON and SObj?
