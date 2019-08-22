@@ -1,6 +1,6 @@
-module SObj {
-    toObj;
-}
+// export module SObj {
+//     toObj;
+// }
 
 const OBJ_PREFIX = "(sobj";
 const LIST_PREFIX = "(list";
@@ -94,9 +94,10 @@ function addSonObj(obj : object, sonObj : object, name : string) : void {
 }
 
 
-function trimToSobj(sobj : string) : string {
+function trimSObj(sobj : string) : string {
     let result = "";
     let len = sobj.length;
+    let doubleQuoteCount = 0;
     for (let i = 0; i < len; ++i) {
         let s = sobj.charAt(i);
         if (s == " " || s == "\n" || s == "\t") {
@@ -105,6 +106,9 @@ function trimToSobj(sobj : string) : string {
                 if (s == " " || s == "\n" || s == "\t") {
                     continue;
                 } else {
+                    if (s == "\"") {
+                        doubleQuoteCount++;
+                    }
                     break;
                 }
             }
@@ -115,6 +119,12 @@ function trimToSobj(sobj : string) : string {
                 }
             } else if (i == len) {
                 return result;
+            }
+        } else if (s == "\"") {
+            doubleQuoteCount++;
+            if (result.substring(result.length - 1) != " " &&
+                doubleQuoteCount % 2 != 0) {
+                result = result.concat(" ");
             }
         }
         result = result.concat(s);
@@ -145,7 +155,7 @@ function isNumber(value : string) : boolean {
     return true;
 }
 
-function isObj(sexp : string) {
+function isObj(sexp : string) : boolean {
     return sexp.startsWith(OBJ_PREFIX);
 }
 
@@ -153,12 +163,11 @@ function isList(sexp : string) : boolean {
     return sexp.startsWith(LIST_PREFIX);
 }
 
-
 function toStr(value : string) : string {
     return value.substring(1, value.length-1);
 }
 
-function toNumber(value : string) : Number {
+function toNumber(value : string) : number {
     return Number.parseFloat(value);
 }
 
@@ -174,7 +183,7 @@ function toBool(value : string) : boolean {
     }
 }
 
-function toList(sexp : string) : Array<object> {
+function toList(sexp : string) : Array<any> {
     let result = [];
     while ((sexp = cdr(sexp)) != "()") {
         let ele : string = car(sexp);
@@ -190,16 +199,27 @@ function toList(sexp : string) : Array<object> {
         } else if (isSymbol(ele)) {
             let tmp = symbolToStr(ele);
             result.push(tmp);
+        } else if (isExp(ele)) {
+            let tmp = toObj(ele);
+            result.push(tmp);
+        } else if (isList(ele)) {
+            let tmp = toList(ele);
+            result.push(tmp);
         }
     }
     return result;
 }
 
+// export
 function toObj(sobj : string) : object {
     let obj : object = {};
-    sobj = trimToSobj(sobj);
+    sobj = trimSObj(sobj);
     if (!isObj(sobj)) {
-        throw "Not a sobj sexp.";
+        if (isList(sobj)) {
+            return toList(sobj);
+        } else {
+            throw "Error: not a valid sobj syntax!";   
+        }
     }
     let slen = sobj.length;
     let start = sobj.indexOf(OBJ_PREFIX) + OBJ_PREFIX.length;
@@ -234,4 +254,77 @@ function toObj(sobj : string) : object {
         }
     }
     return obj;
-};
+}
+
+
+function getSObjTypeValue(value : object) : any {
+    let type = typeof(value);
+    if (type == "string") {
+        return "\"" + value + "\"";
+    } else if (Array.isArray(value)) {
+        // let result = "(list ";
+        // for (let v of value) {
+        //     result += getSObjTypeValue(v);
+        // }
+        // result += ")";
+        // return result;
+        // array里面不能再有array类型
+        throw "Error: array in object is no valid!";
+    } else if (type == "object") {
+        // return toSObj(value);
+        // array里面不能再有object类型
+        throw "Error: array in array is no valid!";
+    } else if (type == "boolean") {
+        let result = value.toString() == "false" ? " #f" : " #t";
+        return result;
+    } else if (type == "undefined") {
+        throw "Error: `undefined` is not support to parse!";
+    } else if (type == "number") {
+        return value;
+    } else {
+        throw "Error: unreconized type `" + type + "`.";
+    }
+}
+
+// export
+function toSObj(obj : object) : string {
+    let result : string = "";
+
+    if (Array.isArray(obj)) {
+        // is an array
+        for (let i = 0; i < obj.length; ++i) {
+            return "(list " + toSObj(obj[i]) + "))";
+        }
+    } else {
+        // is an object
+        result = result.concat("(sobj");
+        for (let key in obj) {
+            let value = obj[key];
+            let valueInSobj = "";
+            let type = typeof(value);
+            if (type == "string") {
+                valueInSobj = "\"" + value + "\"";
+            } else if (Array.isArray(value)) {
+                valueInSobj += "(list ";
+                for (let v of value) {
+                    valueInSobj += getSObjTypeValue(v);
+                }
+                valueInSobj += ")";
+            } else if (type == "object") {
+                valueInSobj += toSObj(value);
+                valueInSobj += ")";
+            } else if (type == "boolean") {
+                valueInSobj += value == false ? " #f" : " #t";
+            } else if (type == "undefined") {
+                throw "Error: `undefined` is not support to parse!";
+            } else if (type == "number") {
+                valueInSobj = " " + value;
+            } else {
+                throw "Error: unreconized type `" + type + "`.";
+            }
+            result = result.concat("(" + key + valueInSobj + ")");
+        }
+    }
+
+    return result;
+}
