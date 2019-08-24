@@ -2,17 +2,33 @@
 Programming Languages data/objects transmit original format. This is the JavaScript Language version.
 
 ## How to use?
-This project is based on the `typescript programming language`, so if you would like to use in the web, you should be install the `tsc` compiler:
+This project is based on the `typescript` programming language, so if you would like to use in the web, you should be install the `tsc` compiler:
 1. How to install `tsc`? 
 int the command line, input:
 > npm install -g typescript
-2. How to use?
+2. Run the test.
+First, your should compiler the `SObj.ts` library to the `SObj.js`, that use this command:
+> tsc -lib es6 SObj.ts
+Then, use the browser to open the `test/test.html` page. now you open the browser developer-tools to see it presents.
+The test.js code is:
 ```javascript
-import {SObj} from "SObj";
-
-// sobj string. Is all the sobj's syntax below.
-let sobj = `
+// toObj test
+let normalSobj = `
 (sobj
+    (name "陈权业")
+    (age 32)
+    (weight 120)
+    (height 182.3)
+    (hand (list "leftHand" "rightHand"
+            (list 'good 'foo 'bar) (list "ok" #t)
+            (sobj (status 'good) (blood #t))))
+    (heart (sobj (velocity "93/s")
+                 (status 'good)
+                 (status2 (list "yes" 'ok #t))))
+    (beautiful #t))
+`;
+let arraySobj = `
+(list (sobj
     (name "陈权业")
     (age 32)
     (weight 120)
@@ -20,9 +36,13 @@ let sobj = `
     (hand (list "leftHand" "rightHand"))
     (heart (sobj (velocity "93/s")
                  (status 'good)))
-    (beautiful #t))
+    (beautiful #t)))
 `;
-let obj = {
+console.log(toObj(normalSobj));
+console.log(toObj(arraySobj));
+
+// toSObj test
+let normalObj = {
     name: "陈权业",
     age: 32,
     weight: 120,
@@ -33,12 +53,13 @@ let obj = {
     },
     beautiful: true
 };
-
-// parse sobj to javascript's object
-SObj.toObj(sobj);
+console.log(toSObj(normalObj));
+console.log(toObj(toSObj(toObj(arraySobj))));
 ```
-3. Convert typescript to javascript
+3. How to use?
+First, you would compile the `SObj.ts` to the `SObj.sj` file.
 > tsc -lib es6 SObj.ts
+Then, you can use in the web develpments.
 
 ## What are differences between JSON and SObj?
 They are the same pointing that use to transmit the data/objects.

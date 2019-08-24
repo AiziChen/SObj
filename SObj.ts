@@ -199,7 +199,7 @@ function toList(sexp : string) : Array<any> {
         } else if (isSymbol(ele)) {
             let tmp = symbolToStr(ele);
             result.push(tmp);
-        } else if (isExp(ele)) {
+        } else if (isObj(ele)) {
             let tmp = toObj(ele);
             result.push(tmp);
         } else if (isList(ele)) {
@@ -262,18 +262,14 @@ function getSObjTypeValue(value : object) : any {
     if (type == "string") {
         return "\"" + value + "\"";
     } else if (Array.isArray(value)) {
-        // let result = "(list ";
-        // for (let v of value) {
-        //     result += getSObjTypeValue(v);
-        // }
-        // result += ")";
-        // return result;
-        // array里面不能再有array类型
-        throw "Error: array in object is no valid!";
+        let result = "(list ";
+        for (let v of value) {
+            result += getSObjTypeValue(v);
+        }
+        result += ")";
+        return result;
     } else if (type == "object") {
-        // return toSObj(value);
-        // array里面不能再有object类型
-        throw "Error: array in array is no valid!";
+        return toSObj(value);
     } else if (type == "boolean") {
         let result = value.toString() == "false" ? " #f" : " #t";
         return result;

@@ -7,9 +7,12 @@ let normalSobj = `
     (age 32)
     (weight 120)
     (height 182.3)
-    (hand (list "leftHand" "rightHand"))
+    (hand (list "leftHand" "rightHand"
+            (list 'good 'foo 'bar) (list "ok" #t)
+            (sobj (status 'good) (blood #t))))
     (heart (sobj (velocity "93/s")
-                 (status 'good)))
+                 (status 'good)
+                 (status2 (list "yes" 'ok #t))))
     (beautiful #t))
 `;
 let arraySobj = `
