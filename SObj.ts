@@ -269,7 +269,7 @@ function getSObjTypeValue(value : object) : any {
         result += ")";
         return result;
     } else if (type == "object") {
-        return toSObj(value);
+        return toSObj(value) + ")";
     } else if (type == "boolean") {
         let result = value.toString() == "false" ? " #f" : " #t";
         return result;
