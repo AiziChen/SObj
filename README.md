@@ -7,21 +7,21 @@ Java version is also here: https://github.com/AiziChen/SObj-java.git
 
 ## How to use?
 
-This project is based on the `typescript` programming language, so if you would like to use it in the web, you need to complie it to `javascript`, There we use the `tsc` compiler:
+This project is based on the `typescript` programming language, so if you would like to use it in the web, you need to complie it to `javascript`, There we are using the `tsc` compiler, steps:
 
-1. Install the typescript compiler `tsc`
+1. Installing the typescript compiler `tsc`
 
    int the command line, input:
 
    > npm install -g typescript
 
-2. Compile
+2. Compiling
 
    First, your should compiler the `SObj.ts` library to the `SObj.js`, that use this command:
 
    > tsc -lib es6 SObj.ts
 
-3. Test
+3. Finally, making test
 
    Then, use the browser to open the `test/test.html` page. now you open the browser developer-tools to see it presents.
    The test.js code is:
