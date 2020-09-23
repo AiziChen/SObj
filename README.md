@@ -10,16 +10,19 @@ Java version is also here: https://github.com/AiziChen/SObj-java.git
 This project is based on the `typescript` programming language, so if you would like to use it in the web, you need to complie it to `javascript`, There we use the `tsc` compiler:
 
 1. Install the typescript compiler `tsc`
+
    int the command line, input:
 
    > npm install -g typescript
 
 2. Compile
+
    First, your should compiler the `SObj.ts` library to the `SObj.js`, that use this command:
 
    > tsc -lib es6 SObj.ts
 
-3. Use it
+3. Use
+
    Then, use the browser to open the `test/test.html` page. now you open the browser developer-tools to see it presents.
    The test.js code is:
 
@@ -69,11 +72,6 @@ console.log(toSObj(normalObj));
 console.log(toObj(toSObj(toObj(arraySobj))));
 ```
 
-3. How to use?
-   First, you would compile the `SObj.ts` to the `SObj.sj` file.
-   > tsc -lib es6 SObj.ts
-
-Then, you can use in the web develpments.
 
 ## What are differences between JSON and SObj?
 
