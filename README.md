@@ -21,7 +21,7 @@ This project is based on the `typescript` programming language, so if you would 
 
    > tsc -lib es6 SObj.ts
 
-3. Use
+3. Test
 
    Then, use the browser to open the `test/test.html` page. now you open the browser developer-tools to see it presents.
    The test.js code is:
