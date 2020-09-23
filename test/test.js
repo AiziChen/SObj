@@ -2,27 +2,27 @@
 
 // toObj test
 let normalSobj = `
-(sobj
+(*obj
     (name "陈权业")
     (age 32)
     (weight 120)
     (height 182.3)
     (hand (list "leftHand" "rightHand"
-            (list 'good 'foo 'bar) (list "ok" #t)
-            (sobj (status 'good) (blood #t))))
+            (*list 'good 'foo 'bar) (list "ok" #t)
+            (*obj (status 'good) (blood #t))))
     (heart (sobj (velocity "93/s")
                  (status 'good)
-                 (status2 (list "yes" 'ok #t))))
+                 (status2 (*list "yes" 'ok #t))))
     (beautiful #t))
 `;
 let arraySobj = `
-(list (sobj
+(*list (*obj
     (name "陈权业")
     (age 32)
     (weight 120)
     (height 182.3)
-    (hand (list "leftHand" "rightHand"))
-    (heart (sobj (velocity "93/s")
+    (hand (*list "leftHand" "rightHand"))
+    (heart (*obj (velocity "93/s")
                  (status 'good)))
     (beautiful #t)))
 `;
@@ -44,3 +44,5 @@ let normalObj = {
 
 console.log(toSObj(normalObj));
 console.log(toObj(toSObj(toObj(arraySobj))));
+console.log(JSON.stringify(toObj(normalSobj)));
+console.log(trimSObj(normalSobj));
